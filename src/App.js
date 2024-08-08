@@ -33,20 +33,23 @@
 // export default App;
 
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login'; // 登录页面组件
-import Register from './components/Register'; // 注册页面组件
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Login from './components/Login'; // 登录页面组件
+// import Register from './components/Register'; // 注册页面组件
+// import './components/Login.css';
+// function App() {
+//   // return (
+//   //   <Router>
+//   //     <Routes>
+//   //       // 导致一个问题，根目录进入时，为空白
+//   //       <Route path="/" element={<Login />} />
+//   //       <Route path="/login" element={<Login />} />
+//   //       <Route path="/register" element={<Register/>} />
+//   //     </Routes>
+//   //   </Router>
+//   return 
+//   );
+// }
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
+// export default App;

@@ -1,18 +1,23 @@
 import React from 'react';
 import { Form, Input, Button, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import './Register.css';
+
 const { Title, Text } = Typography;
 
 const Register = () => {
+    const navigate = useNavigate()
+
     const onFinish = (values) => {
         console.log('Received values:', values);
         // 在这里可以将注册信息发送到后端（Node.js）进行处理
         // 例如：发送 POST 请求到后端的注册接口
+        navigate('/login');
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: 'auto', marginTop: '50px' }}>
-            <Title level={2}>Register...</Title>
+        <div className='register-container'>
+            <Title level={2} className='register-title'>Register...</Title>
 
             <Form
                 name="register-form"

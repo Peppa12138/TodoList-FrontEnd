@@ -48,22 +48,35 @@
 // export default Login;
 
 
-import React from 'react';
-import { Form, Input, Button, Typography } from 'antd';
-import { Link } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { Form, Input, Button, Typography,message } from 'antd';
+import { Link, Navigate } from 'react-router-dom'; 
 import './Login.css'; // 引入新的 CSS 文件
 
 
 const { Title, Text } = Typography;
 
 const Login = () => {
+    const [loggedIn, setLoggedIn] = useState(false); // 管理登录状态的 state
+
     const onFinish = (values) => {
         console.log('Received values:', values);
+        // 假设在这里进行用户名和密码的验证
+        if (values.username === 'admin' && values.password === '1234') {
+            setLoggedIn(true); // 设置登录状态为 true
+        }
+        else {
+            message.error('用户名或密码错误！');
+        }
     };
 
+    // 如果已经登录成功，重定向到 /app 页面
+    if (loggedIn) {
+        return <Navigate to="/app" />;
+    }
     return (
-        <div>
-            <Title level={2}>Login...</Title>
+        <div className="login-container">
+            <Title level={2} className='login-title'>Login...</Title>
 
             <Form
                 name="login-form"

@@ -1,0 +1,14 @@
+.register-container {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 10%;
+    text-align: center;
+}
+
+.register-title {
+    font-family: Clarendon, serif;
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 20px;
+
+}

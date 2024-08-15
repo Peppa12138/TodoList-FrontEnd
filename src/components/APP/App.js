@@ -1,7 +1,8 @@
 import { List, Checkbox, Button, Input, DatePicker, message, Modal } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { useState } from "react";
+import axios from 'axios';
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
 export default function ToDoList() {
@@ -9,41 +10,71 @@ export default function ToDoList() {
     const [task, setTasks] = useState("")
     const [deadline, setDeadline] = useState("")
     const [messageApi, contextHolder] = message.useMessage()
-    const [idCounter, setIdCounter] = useState(1)
     const navigate = useNavigate()
-    function addTask() {
-        if (lists) {
-            if (task !== "" && deadline) {
-                setLists([...lists, { id: idCounter, task, deadline, finished: false }])
-                setDeadline(null)
-                setTasks("")
-                setIdCounter(idCounter + 1)
-                messageApi.success("添加成功")
+    const userId = localStorage.getItem("userId");
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5002/tasks?userId=${userId}`);
+                if (response.data.success) {
+                    console.log("Fecthed tasks:",response.data.tasks);
+                    setLists(response.data.tasks);
+                } else {
+                    messageApi.error(response.data.message);
+                }
+            } catch (error) {
+                messageApi.error('加载任务失败');
             }
-            else {
-                if (!deadline && task === "") {
-                    messageApi.error("请填写任务并提供截止时间")
+        };
+        fetchTasks();
+    }, [userId]);
+    const addTask = async () => {
+        if (task !== "" && deadline) {
+            try {
+                const response = await axios.post('http://localhost:5002/tasks', {
+                    task,
+                    deadline,
+                    finished: false,
+                    userId,
+                });
+                if (response.data.success) {
+                    // setLists([...lists, { id: response.data.id, task, deadline, finished: false }]);
+                    setLists([...lists, response.data.task]);
+                    
+                    setDeadline(null);
+                    setTasks("");
+                    messageApi.success("添加成功");
+                } else {
+                    messageApi.error(response.data.message);
                 }
-                else if (task === "") {
-                    messageApi.error("请填写任务")
-                }
-                else {
-                    messageApi.error("请提供截止时间")
-                }
+            } catch (error) {
+                messageApi.error('添加任务失败');
+            }
+        } else {
+            if (!deadline && task === "") {
+                messageApi.error("请填写任务并提供截止时间");
+            } else if (task === "") {
+                messageApi.error("请填写任务");
+            } else {
+                messageApi.error("请提供截止时间");
             }
         }
-    }
-    function deleteTask(id) {
-        if (lists) {
-            let temp = []
-            for (let i = 0; i < lists.length; i++) {
-                if (lists[i].id !== id) {
-                    temp.push(lists[i])
-                }
+    };
+    const deleteTask = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:5002/tasks/${id}`, {
+                params: { userId }
+            });
+            if (response.data.success) {
+                setLists(lists.filter(task => task.id !== id));
+                messageApi.success("任务已删除");
+            } else {
+                messageApi.error(response.data.message);
             }
-            setLists(temp)
+        } catch (error) {
+            messageApi.error('删除任务失败');
         }
-    }
+    };
     function confirmDelete(id, task) {
         Modal.confirm({
             title: "确认删除",
@@ -53,17 +84,18 @@ export default function ToDoList() {
             onOk: () => { deleteTask(id) }
         })
     }
-    function checkTask(id, check) {
-        if (lists) {
-            const newLists = lists.map((e) => {
-                if (e.id === id) {
-                    return { ...e, finished: check }
-                }
-                return e
-            })
-            setLists(newLists)
+    const checkTask = async (id, checked) => {
+        try {
+            const response = await axios.put(`http://localhost:5002/tasks/${id}`, {finished: checked});
+            if (response.data.success) {
+                setLists(lists.map(e => (e.id === id ? { ...e, finished: checked } : e)));
+            } else {
+                messageApi.error(response.data.message);
+            }
+        } catch (error) {
+            messageApi.error('更新任务状态失败');
         }
-    }
+    };
     function handleLogout() {
         Modal.confirm({
             title: "退出登录",
@@ -71,8 +103,8 @@ export default function ToDoList() {
             okText: "确认",
             cancelText: "取消",
             onOk: () => {
-                localStorage.removeItem("token")
-                navigate("/")
+                localStorage.removeItem("userId");
+                navigate("/");
             }
         })
 
@@ -107,25 +139,33 @@ export default function ToDoList() {
             <div className="list-container">
                 <List
                     dataSource={lists}
-                    renderItem={(list) => (
-                        <List.Item
-                            actions={[
-                                <Checkbox
-                                    onChange={(e) => {
-                                        checkTask(list.id, e.target.checked)
-                                    }}
-                                />,
-                                <DeleteOutlined onClick={() => confirmDelete(list.id, list.task)} />
-                            ]}
-                        >
-                            <div
-                                className={`${list.finished ? "finished" : ""} ${moment(list.deadline).isBefore(moment(), "day") ? "timeout" : ""}`}
+                    renderItem={(list) => {
+                        // if (!list || !list.id) {
+                        //     console.error("Invalid list item:", list); 
+                        //     return null; 
+                        // }
+                        return (
+                            <List.Item
+                                key={list.id}
+                                actions={[
+                                    <Checkbox
+                                        onChange={(e) => {
+                                            checkTask(list.id, e.target.checked)
+                                        }}
+                                        defaultChecked={list.finished}
+                                    />,
+                                    <DeleteOutlined onClick={() => confirmDelete(list.id)} />
+                                ]}
                             >
-                                <div>{list.task}</div>
-                                <div>截止时间：{moment(list.deadline).format("YYYY-MM-DD")}</div>
-                            </div>
-                        </List.Item>
-                    )}
+                                <div
+                                    className={`${list.finished ? "finished" : ""} ${moment(list.deadline).isBefore(moment(), "day") ? "timeout" : ""}`}
+                                >
+                                    <div>{list.task}</div>
+                                    <div>截止时间：{moment(list.deadline).format("YYYY-MM-DD")}</div>
+                                </div>
+                            </List.Item>
+                        )
+                    }}
                 />
             </div>
         </div>

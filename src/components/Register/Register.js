@@ -1,18 +1,31 @@
 import React from 'react';
-import { Form, Input, Button, Typography } from 'antd';
+import { Form, Input, Button, Typography, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Register.css';
 
 const { Title, Text } = Typography;
 
 const Register = () => {
+    const [form] = Form.useForm();
+
     const navigate = useNavigate()
 
-    const onFinish = (values) => {
-        console.log('Received values:', values);
-        // 在这里可以将注册信息发送到后端（Node.js）进行处理
-        // 例如：发送 POST 请求到后端的注册接口
-        navigate('/login');
+    const onFinish = async (values) => {
+
+        try {
+            const response = await axios.post('http://localhost:5002/register', values);
+            if (response.data.success) {
+                message.success('注册成功');
+                form.resetFields();
+                navigate('/login');
+            } else {
+                message.error(response.data.message);
+            }
+        } catch (error) {
+            message.error('注册请求失败');
+        }
+
     };
 
     return (
@@ -20,48 +33,53 @@ const Register = () => {
             <Title level={2} className='register-title'>Register...</Title>
 
             <Form
-                name="register-form"
-                initialValues={{ remember: true }}
+                form={form}
                 onFinish={onFinish}
             >
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    rules={[
+                        { required: true, message: '请输入密码!' },
+                        {
+                            pattern: /^\S*$/,
+                            message: '密码不能包含空格！'
+                        },
+                    ]}
                 >
-                    <Input placeholder="Username" />
+                    <Input placeholder="用户名" />
                 </Form.Item>
 
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    rules={[
+                        { required: true, message: '请输入密码!' },
+                        {
+                            pattern: /^\S*$/,
+                            message: '密码不能包含空格！'
+                        },
+                    ]}
                 >
-                    <Input.Password placeholder="Password" />
+                    <Input.Password placeholder="密码" />
                 </Form.Item>
 
                 <Form.Item
                     name="confirmPassword"
                     dependencies={['password']}
                     rules={[
-                        { required: true, message: 'Please confirm your password!' },
+                        { required: true, message: '请确认密码' },
                         ({ getFieldValue }) => ({
                             validator(_, value) {
                                 if (!value || getFieldValue('password') === value) {
                                     return Promise.resolve();
                                 }
-                                return Promise.reject(new Error('The two passwords do not match!'));
+                                return Promise.reject('密码不匹配！');
                             },
                         }),
                     ]}
                 >
-                    <Input.Password placeholder="Confirm Password" />
+                    <Input.Password placeholder="确认密码" />
                 </Form.Item>
 
-                <Form.Item
-                    name="captcha"
-                    rules={[{ required: true, message: 'Please input the captcha!' }]}
-                >
-                    <Input placeholder="Captcha" />
-                </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }}>

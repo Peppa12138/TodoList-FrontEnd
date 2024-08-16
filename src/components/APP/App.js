@@ -17,7 +17,7 @@ export default function ToDoList() {
             try {
                 const response = await axios.get(`http://localhost:5002/tasks?userId=${userId}`);
                 if (response.data.success) {
-                    console.log("Fecthed tasks:",response.data.tasks);
+                    console.log("Fecthed tasks:", response.data.tasks);
                     setLists(response.data.tasks);
                 } else {
                     messageApi.error(response.data.message);
@@ -38,9 +38,8 @@ export default function ToDoList() {
                     userId,
                 });
                 if (response.data.success) {
-                    // setLists([...lists, { id: response.data.id, task, deadline, finished: false }]);
                     setLists([...lists, response.data.task]);
-                    
+
                     setDeadline(null);
                     setTasks("");
                     messageApi.success("添加成功");
@@ -86,7 +85,7 @@ export default function ToDoList() {
     }
     const checkTask = async (id, checked) => {
         try {
-            const response = await axios.put(`http://localhost:5002/tasks/${id}`, {finished: checked});
+            const response = await axios.put(`http://localhost:5002/tasks/${id}`, { finished: checked });
             if (response.data.success) {
                 setLists(lists.map(e => (e.id === id ? { ...e, finished: checked } : e)));
             } else {
@@ -113,7 +112,7 @@ export default function ToDoList() {
         <div className="to-do-list">
             {contextHolder}
             <h1 id="title">To Do List</h1>
-            <Button type="default" onClick={handleLogout}>
+            <Button type="default" onClick={handleLogout} className="logout-btn">
                 登出
             </Button>
             <div>
@@ -140,10 +139,6 @@ export default function ToDoList() {
                 <List
                     dataSource={lists}
                     renderItem={(list) => {
-                        // if (!list || !list.id) {
-                        //     console.error("Invalid list item:", list); 
-                        //     return null; 
-                        // }
                         return (
                             <List.Item
                                 key={list.id}

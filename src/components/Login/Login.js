@@ -3,8 +3,6 @@ import { Form, Input, Button, Typography, message } from 'antd';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
-
-
 const { Title, Text } = Typography;
 
 const Login = () => {
@@ -17,7 +15,7 @@ const Login = () => {
             const response = await axios.post('http://localhost:5002/login', values);
             if (response.data.success) {
                 const { userId } = response.data;
-                localStorage.setItem('userId', userId); 
+                localStorage.setItem('userId', userId);
                 message.success('登录成功');
                 setUserId(userId);
                 setLoggedIn(true);

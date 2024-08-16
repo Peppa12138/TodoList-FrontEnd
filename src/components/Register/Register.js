@@ -9,6 +9,9 @@ const { Title, Text } = Typography;
 const Register = () => {
     const [form] = Form.useForm();
 
+    const usernamePattern = /^[A-Za-z0-9!]+$/;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*[0-9!])|(?=.*[A-Za-z!])(?=.*[0-9])|(?=.*[A-Z])(?=.*[a-z])/;
+
     const navigate = useNavigate()
 
     const onFinish = async (values) => {
@@ -39,11 +42,9 @@ const Register = () => {
                 <Form.Item
                     name="username"
                     rules={[
-                        { required: true, message: '请输入密码!' },
-                        {
-                            pattern: /^\S*$/,
-                            message: '密码不能包含空格！'
-                        },
+                        { required: true, message: '请输入用户名!' },
+                        { pattern: usernamePattern, message: '用户名只能包含字母、数字和!' },
+                        { min: 6, message: '用户名至少为6个字符' }
                     ]}
                 >
                     <Input placeholder="用户名" />
@@ -52,11 +53,9 @@ const Register = () => {
                 <Form.Item
                     name="password"
                     rules={[
-                        { required: true, message: '请输入密码!' },
-                        {
-                            pattern: /^\S*$/,
-                            message: '密码不能包含空格！'
-                        },
+                        { required: true, message: '请输入密码！' },
+                        { pattern: passwordPattern, message: '密码必须包含字母、数字或!中至少两种' },
+                        { min: 8, message: '密码至少为8个字符' }
                     ]}
                 >
                     <Input.Password placeholder="密码" />

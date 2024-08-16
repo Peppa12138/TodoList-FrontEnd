@@ -109,7 +109,6 @@ export default function ToDoList() {
                 navigate("/");
             }
         })
-
     }
     return (
         <div className="to-do-list">

@@ -6,10 +6,16 @@ import './Login.css';
 const { Title, Text } = Typography;
 
 const Login = () => {
+    const userid = localStorage.getItem("userId");
+
     const [loggedIn, setLoggedIn] = useState(false);
     const [userId, setUserId] = useState(null);
     const [form] = Form.useForm();
 
+    if (userid) {
+        return <Navigate to="/app" />;
+    }
+    
     const onFinish = async (values) => {
         try {
             const response = await axios.post('http://localhost:5002/login', values);

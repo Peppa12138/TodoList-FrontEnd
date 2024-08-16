@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# ToDoList Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+这是一个用于 ToDoList 应用程序的前端项目，提供了用户界面以管理待办任务。该项目使用了 React 框架，并集成了 Ant Design 组件库，用户可以通过这个界面注册、登录以及管理他们的任务。
 
-## Available Scripts
+## 目录
 
-In the project directory, you can run:
+- [项目概述](#项目概述)
+- [技术栈](#技术栈)
+- [环境要求](#环境要求)
+- [安装与运行](#安装与运行)
+- [项目结构](#项目结构)
+- [功能介绍](#功能介绍)
+- [贡献](#贡献)
+- [许可证](#许可证)
 
-### `npm start`
+## 项目概述
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ToDoList Frontend 是一个单页应用（SPA），支持以下功能：
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 用户注册和登录
+- 显示用户的待办任务列表
+- 添加新任务
+- 更新任务状态（标记为完成/未完成）
+- 删除任务
 
-### `npm test`
+## 技术栈
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **React**: 用于构建用户界面的 JavaScript 库
+- **Ant Design**: 企业级 UI 设计语言和 React 组件库
+- **Axios**: 用于处理 HTTP 请求
+- **React Router**: 实现前端路由
 
-### `npm run build`
+## 环境要求
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+在运行此项目之前，请确保您的系统已安装以下环境：
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js (>=14.x)
+- npm 或 yarn (用于管理依赖)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 安装与运行
 
-### `npm run eject`
+1. **克隆仓库**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   ```bash
+   git clone https://github.com/Peppa12138/TodoList-FrontEnd.git
+   cd TodoList-FrontEnd
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **安装依赖**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   使用 npm 或 yarn 安装项目所需的依赖：
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   ```bash
+   npm install
+   # 或者
+   yarn install
+   ```
 
-## Learn More
+3. **启动开发服务器**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   npm start
+   # 或者
+   yarn start
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   服务器将运行在`http://localhost:3000`，并自动在浏览器中打开。
 
-### Code Splitting
+## 功能介绍
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **用户认证**
 
-### Analyzing the Bundle Size
+  - 支持用户注册和登录功能。
+  - 登录后用户可管理自己的待办任务。
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **任务管理**
+  - **查看任务**: 登录后用户可以查看自己的所有任务。
+  - **添加任务**: 用户可以创建新的待办任务。
+  - **更新任务**: 用户可以修改任务的状态（如完成、未完成）。
+  - **删除任务**: 用户可以删除不需要的任务。
 
-### Making a Progressive Web App
+## 贡献
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+欢迎贡献者提交 pull request。如果你发现了问题或有改进建议，请在 GitHub 上创建 issue。
 
-### Advanced Configuration
+## 许可证
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+此项目使用 MIT 许可证。详情请参阅 [LICENSE 文件](LICENSE)。

@@ -77,7 +77,7 @@ export default function ToDoList() {
     function confirmDelete(id, task) {
         Modal.confirm({
             title: "确认删除",
-            content: `确定要删除任务${task}吗？`,
+            content: `确定要删除"${task}"吗？`,
             okText: "确认",
             cancelText: "取消",
             onOk: () => { deleteTask(id) }
@@ -149,7 +149,7 @@ export default function ToDoList() {
                                         }}
                                         defaultChecked={list.finished}
                                     />,
-                                    <DeleteOutlined onClick={() => confirmDelete(list.id)} />
+                                    <DeleteOutlined onClick={() => confirmDelete(list.id,list.task)} />
                                 ]}
                             >
                                 <div

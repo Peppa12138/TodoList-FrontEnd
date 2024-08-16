@@ -12,6 +12,9 @@ export default function ToDoList() {
     const [messageApi, contextHolder] = message.useMessage()
     const navigate = useNavigate()
     const userId = localStorage.getItem("userId");
+    if (!userId) {  
+        navigate("/");
+    }
     useEffect(() => {
         const fetchTasks = async () => {
             try {
